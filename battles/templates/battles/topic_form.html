@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>お題を投稿 - Oogiri Hub</title>
+</head>
+<body>
+    <h1>🎭 新しいお題を投稿する</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">投稿する</button>
+    </form>
+
+    <p><a href="{% url 'battles:topic_list' %}">← お題一覧に戻る</a></p>
+</body>
+</html>

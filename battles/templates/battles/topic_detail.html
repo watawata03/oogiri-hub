@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ topic.title }} - Oogiri Hub</title>
+</head>
+<body>
+    <p><a href="{% url 'battles:topic_list' %}">← お題一覧に戻る</a></p>
+
+    <!-- お題の表示 -->
+    <h1>🎭 {{ topic.title }}</h1>
+    <p><small>投稿者: {{ topic.creator.username }} / 投稿日時: {{ topic.created_at|date:"Y/m/d H:i" }}</small></p>
+
+    <hr>
+
+    <!-- 回答（ボケ）投稿フォーム -->
+    <h3>💬 ボケを投稿する</h3>
+    {% if user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">ボケる！</button>
+        </form>
+    {% else %}
+        <p><a href="{% url 'admin:login' %}">ログイン</a>するとボケを投稿できます。</p>
+    {% endif %}
+
+    <hr>
+
+    <!-- 回答一覧 -->
+<h3>✨ みんなのボケ一覧 ({{ answers.count }}件)</h3>
+    <ul>
+        {% for answer in answers %}
+            <li>
+                <p><strong>{{ answer.body }}</strong></p>
+                <p>
+                    <small>ボケた人: {{ answer.author.username }} / {{ answer.created_at|date:"Y/m/d H:i" }}</small>
+                </p>
+                
+                <!-- ★ 投票ボタンと得票数の表示 -->
+                <form action="{% url 'battles:vote_answer' answer.pk %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="background-color: #ffcc00; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;">
+                        🔥 おもろい！ ({{ answer.votes.count }})
+                    </button>
+                </form>
+            </li>
+            <hr style="border: none; border-top: 1px dashed #ccc;">
+        {% empty %}
+            <li>まだボケがありません。最初のボケを投稿してみよう！</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
