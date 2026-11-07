@@ -35,7 +35,7 @@ class Answer(models.Model):
 
 
 class Vote(models.Model):
-  """投票（「おもろい！」）モデル"""
+  """投票（「おもしろい！」）モデル"""
 
   answer = models.ForeignKey(
       Answer, on_delete=models.CASCADE, related_name="votes", verbose_name="回答"
