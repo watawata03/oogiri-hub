@@ -72,3 +72,16 @@ def vote_answer(request, answer_pk):
 
   # お馴染みのお題詳細ページへリダイレクト
   return redirect("battles:topic_detail", pk=answer.topic.pk)
+
+def user_profile(request, username):
+  """ユーザープロフィールビュー"""
+  user = get_object_or_404(user, username=username)
+  topics = Topic.objects.filter(creator=user).order_by("-created_at")
+  answers = Answer.objects.filter(author=user).order_by("-created_at")
+
+  context = {
+      "profile_user": user,
+      "topics": topics,
+      "answers": answers,
+  }
+  return render(request, "battles/user_profile.html", context)
