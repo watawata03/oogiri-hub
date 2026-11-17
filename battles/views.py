@@ -49,7 +49,6 @@ def topic_detail(request, pk):
       return redirect("battles:topic_detail", pk=topic.pk)
   else:
     form = AnswerForm()
-
   context = {
       "topic": topic,
       "answers": answers,
